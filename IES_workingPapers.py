@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 
 # Initialize the browser
 browser = webdriver.Chrome()  # Use the appropriate driver
@@ -13,22 +12,29 @@ if user_input.lower() != 'y':
     print("uh")
 else:
     while True:
-        # Find all the links within the specified element
-        link_elements = browser.find_elements(By.XPATH, "//div[@class='col-sm-12']/p/a")
+        # Find all the publication links on the page
+        publication_links = browser.find_elements(By.XPATH, "//a[contains(@href, '/sci/publication/show/id/')]")
         
-        # Process each link
-        for link_element in link_elements:
-            link_text = link_element.text
-            link_href = link_element.get_attribute("href")
+        for link in publication_links:
+            link_text = link.text
+            link_href = link.get_attribute("href")
+            print(f"Processing link: {link_text}")
+            print(f"Link URL: {link_href}")
             
-            print("Processing link:", link_text)
-            print("Link URL:", link_href)
+            # Open the link in a new tab
+            browser.execute_script("window.open('', '_blank');")
+            browser.switch_to.window(browser.window_handles[-1])
+            browser.get(link_href)
             
-            # You can use link_href to navigate to the link and perform scraping and processing
+            # Allow you to manually interact with the opened page
+            input("Press Enter to continue...")
             
-            # Pause briefly to avoid overloading the website
-            time.sleep(1)
-        
+            # Close the current tab and switch back to the main tab
+            browser.close()
+            browser.switch_to.window(browser.window_handles[0])
+            
+            print("------------")
+            
         # Summarize or interact with the user
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() != 'y':
