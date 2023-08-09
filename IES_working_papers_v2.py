@@ -54,6 +54,30 @@ else:
             browser.switch_to.window(browser.window_handles[0])
             
             print("------------")
+            
+            # Open new page for data transfer
+            new_page_url = "https://ies2.fsv.cuni.cz/node/add/basic_page"
+            browser.execute_script("window.open('', '_blank');")
+            browser.switch_to.window(browser.window_handles[-1])
+            browser.get(new_page_url)
+            
+            # Wait for the user input before proceeding
+            input("Press Enter after filling in content...")
+            
+            # Fill in the content on the new page
+            # Replace the following code with the specific logic for filling the content
+            # For example, you can use browser.find_element and browser.send_keys to fill in text fields.
+            
+            # Wait for the element to be present
+            wait = WebDriverWait(browser, 50)  # Adjust the timeout as needed
+            submit_button = wait.until(EC.presence_of_element_located((By.ID, "edit-submit")))
+            
+            # Submit the form
+            submit_button.click()
+            
+            # Close the current tab and switch back to the main tab
+            browser.close()
+            browser.switch_to.window(browser.window_handles[0])
 
         # Summarize or interact with the user
         user_input = input("Do you want to continue? (y/n): ")
