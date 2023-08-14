@@ -80,6 +80,10 @@ else:
             url_alias_value = f"https://ies2.fsv.cuni.cz/veda-vyzkum/working-papers/{sanitized_file_name}"
             url_alias_field.clear()  # Clear any existing value
             url_alias_field.send_keys(url_alias_value)
+            print(url_alias_value)
+            print("could be")
+            url_alias_value2 = f"/veda-vyzkum/working-papers/{sanitized_file_name}"
+            print(url_alias_value2)
             
             # Wait for the element to be present and interactable
             wait = WebDriverWait(browser, 10)  # Adjust the timeout as needed
