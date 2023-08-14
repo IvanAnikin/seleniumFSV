@@ -64,6 +64,17 @@ else:
             
             print("------------")
             
+            # Extract the original title from the page
+            try:
+                original_title_element = browser.find_element(By.XPATH, "/html/body/section[1]/div/div/div/h3")
+                original_title = original_title_element.text
+            except Exception as e:
+                print(f"Error extracting original title: {e}")
+                original_title = "default-title"  # Provide a default title if extraction fails
+            
+            # Generate the URL alias based on the original title
+            url_alias_path = f"/veda-vyzkum/working-papers/{sanitize_filename(original_title)}"
+            
             # Open new page for data transfer
             new_page_url = "https://ies2.fsv.cuni.cz/node/add/basic_page"
             browser.execute_script("window.open('', '_blank');")
@@ -77,13 +88,9 @@ else:
             url_alias_field = WebDriverWait(browser, 10).until(
                 EC.visibility_of_element_located((By.ID, "edit-path-0-domain-path-ies-fsv-cuni-cz-path"))
             )
-            url_alias_value = f"https://ies2.fsv.cuni.cz/veda-vyzkum/working-papers/{sanitized_file_name}"
+            url_alias_value = f"https://ies2.fsv.cuni.cz{url_alias_path}"
             url_alias_field.clear()  # Clear any existing value
             url_alias_field.send_keys(url_alias_value)
-            print(url_alias_value)
-            print("could be")
-            url_alias_value2 = f"/veda-vyzkum/working-papers/{sanitized_file_name}"
-            print(url_alias_value2)
             
             # Wait for the element to be present and interactable
             wait = WebDriverWait(browser, 10)  # Adjust the timeout as needed
